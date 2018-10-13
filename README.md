@@ -5,7 +5,7 @@ notes and experimentation with electron -- following Electron in Action by Steve
 
 * Cross-origin requests are permitted in electron as it has all the abilities of a node server and Chromium experimental broswer features. This also means that browser compatabillity is not a problem as a published electron app includes the chromium files. 
 
-## Setting up a ui window and loading html
+### Basic Set-up: UI window and loading html.
 
 ```javascript
 const { app, BrowserWindow } = require('electron')
@@ -18,3 +18,11 @@ app.on('ready', () => {
   mainWindow.webContents.loadFile('./app/index.html')
 })
 ```
+
+### Shell module 
+```javascript
+const { shell } = require('electron')
+```
+* Provides functions related to high-level desktop integration
+
+  - shell.openExternal(URL): find the users prefered browser and open URL
