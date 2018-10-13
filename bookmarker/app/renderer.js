@@ -15,18 +15,25 @@ newLinkForm.addEventListener('submit', (event) => {
   event.preventDefault()
   const url = newLinkUrl.value
   fetch(url)
+    .then(validateResponse)
     .then(response => response.text())
     .then(parseResponse)
     .then(findTitle)
     .then(title => storeLink(title, url))
     .then(clearForm)
-    .then(renderLinks);
+    .then(renderLinks)
+    .catch(error => handleError(error, url))
 })
 
 clearStorageButton.addEventListener('click', () => {
   localStorage.clear()
   linksSection.innerHTML = ''
 })
+
+const validateResponse = (response) => {
+  if (response.ok) { return response }
+  throw new Error(`Status code of ${response.status} ${response.statusText}`)
+}
 
 const clearForm = () => {
   newLinkUrl.value = null
@@ -59,6 +66,13 @@ const convertToElement = (link) => {
 const renderLinks = () => {
   const linkElements = getLinks().map(convertToElement).join('')
   linksSection.innerHTML = linkElements
+}
+
+const handleError = (error, url) => {
+  errorMessage.innerHTML = `
+    There was an issue adding "${url}": ${error.message}
+  `.trim()
+  setTimeout(() => errorMessage.innerText = null, 5000)
 }
 
 renderLinks()
