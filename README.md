@@ -16,6 +16,9 @@ app.on('ready', () => {
   console.log('we online')
   mainWindow = new BrowserWindow()
   mainWindow.webContents.loadFile('./app/index.html')
+  mainWindow.on('closed', () => {
+    mainWindow = null;
+  });
 })
 ```
 
