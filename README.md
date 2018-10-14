@@ -38,14 +38,16 @@ const { shell } = require('electron')
 * Electron apps have access to Chrome Developer Tools using **Command-Option-I**
 * mainWindow object can programmaticly open devtools with ```webContents.openDevTools()```
 * set up a build task in Visual Studio Code and a tasks.json in project folder - **Command-Shift-B** to start application with debugging.
+
+package.json
 ```json
-// package.json
 "group": {
     "kind": "build",
     "isDefault": true
  }
- 
- //launch.json settings
+```
+launch.json
+```json
 {
     "version": "0.2.0",
     "configurations": [
