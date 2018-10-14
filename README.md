@@ -5,6 +5,8 @@
 
 * Electron is a software framework for the development of desktop GUI combining node.js and chromium.
 
+* Cross-platform: macOS, Windows and Linux
+
 * Cross-origin requests are permitted in electron as it has all the abilities of a node server and Chromium experimental broswer features. This also means that browser compatabillity is not a problem as a published electron app includes the chromium files. 
 
 ### Set-up: UI window and loading html.
@@ -67,9 +69,9 @@ launch.json
 ```
 
 ### Dialog Module
-* Access to native file dialog boxes 
+* Access to native file dialog boxes, optional first argument of ```mainWindow``` object appears as dropdown from app window rather than an additional window. 
 ```javascript
-dialog.showOpenDialog({
+dialog.showOpenDialog(mainWindow, {
     properties: ['openfile'],
     filters: [
        { name: 'Text Files', extensions: ['txt'] },
