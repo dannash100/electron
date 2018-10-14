@@ -26,6 +26,7 @@ input {
     font: menu;
 }
 
+/*Removes the blue border glow which looks out of place on desktop applications*/
 textarea,
 input,
 div,
