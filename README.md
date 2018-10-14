@@ -70,7 +70,7 @@ launch.json
 * Access to native file dialog boxes 
 ```javascript
 dialog.showOpenDialog({
-    properties: ['openfile']
+    properties: ['openfile'],
     filters: [
        { name: 'Text Files, extensions: ['txt'] },
        { name: 'Markdown Files', extensions: ['md', 'markdown']}
