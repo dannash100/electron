@@ -9,7 +9,7 @@ const fs = require('fs')
 const windows = new Set()
 
 const createWindow = exports.createWindow = () => {
-  let newWindow = newBrowserWindow({ show: false })
+  let newWindow = new BrowserWindow({ show: false })
   newWindow.loadFile('./app/index.html')
   newWindow.once('ready-to-show', () => {
     newWindow.show()
