@@ -75,7 +75,7 @@ dialog.showOpenDialog(mainWindow, {
     properties: ['openfile'],
     filters: [
        { name: 'Text Files', extensions: ['txt'] },
-       { name: 'Markdown Files', extensions: ['md', 'markdown']}
+       { name: 'Markdown Files', extensions: ['md', 'markdown'] }
     ]
 })
  ```
