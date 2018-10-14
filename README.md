@@ -68,6 +68,15 @@ launch.json
 
 ### Dialog Module
 * Access to native file dialog boxes 
-* ```dialog.showOpenDialog({ properties: ['openfile']})``` openfile dialog is attached to the parent window, making it modal. The filters specifies an array of file types that can be displayed or selected when you want to limit the user to a specific type. 
+```javascript
+dialog.showOpenDialog({
+    properties: ['openfile']
+    filters: [
+       { name: 'Text Files, extensions: ['txt'] },
+       { name: 'Markdown Files', extensions: ['md', 'markdown']}
+    ]
+})
+ ```
+* openfile dialog is attached to the parent window, making it modal. The filters specifies an array of file types that can be displayed or selected when you want to limit the user to a specific type. 
 * returns an array containing consisting of paths of selected file/files. 
 * property flags include ```["openDirectory"]``` and ```["multiselections"]```
