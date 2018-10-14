@@ -84,11 +84,14 @@ dialog.showOpenDialog(mainWindow, {
 * property flags include ```["openDirectory"]``` and ```["multiselections"]```
 
 ### Interprocess Communication with Remote Module
-* built in require function does not work across electron processes, instead use the Remote Module to communicate between your multiple renderers and the main process.
+* built in require function does not work across electron processes, instead use the Remote Module to communicate between your multiple renderers and the main process. 
 * anonymous functions assigned to a variable can be exported in this way as exports is an object in which you can attach properties and methods to
 ```javascript
 const doSomething = exports.doSomething = () => {
 }
 ```
 * to require with remote module use ```remote.require('./main.js')```
+* in main process use ```mainWindow.webContents.send('channelName', ...dataToSend )``` to broadcast data on chosen channel
+* in renderers use ```ipcRenderer.on('channelName' (event, (dataToReceive) => {})``` to set up listeners on channel specified above.
+
 
