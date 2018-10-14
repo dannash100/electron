@@ -1,7 +1,11 @@
 {
   "name": "markdown",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "./app/main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"    
+  },
   "license": "MIT",
   "dependencies": {
     "electron": "^3.0.4",
