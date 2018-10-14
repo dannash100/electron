@@ -12,21 +12,28 @@
 ### Set-up: UI window and loading html.
 
 ```javascript
-const { app, BrowserWindow } = require('electron')
+const windows = new Set()
 
-let mainWindow = null
+const createWindow = exports.createWindow = () => {
+  let newWindow = new BrowserWindow({ show: false })
+  newWindow.loadFile('./app/index.html')
+  newWindow.once('ready-to-show', () => {
+    newWindow.show()
+  })
+  newWindow.on('closed', () => {
+    windows.delete(newWindow)
+    newWindow = null
+  })
+  windows.add(newWindow)
+  return newWindow
+}
 
 app.on('ready', () => {
-    mainWindow = new BrowserWindow({show: false})
-    mainWindow.loadFile('./app/index.html')
-    mainWindow.once('ready-to-show', () => {
-        mainWindow.show()
-    })
-    mainWindow.on('closed', () => {
-        mainWindow = null
-    })
+  createWindow()
 })
 ```
+* to reference which window is in use : ```currentWindow = remote.getCurrentWindow()```
+
 
 ### Shell module 
 ```javascript
