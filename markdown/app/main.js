@@ -6,23 +6,27 @@ const {
 
 const fs = require('fs')
 
-let mainWindow = null
+const windows = new Set()
+
+const createWindow = exports.createWindow = () => {
+  let newWindow = newBrowserWindow({ show: false })
+  newWindow.loadFile('./app/index.html')
+  newWindow.once('ready-to-show', () => {
+    newWindow.show()
+  })
+  newWindow.on('closed', () => {
+    windows.delete(newWindow)
+    newWindow = null
+  })
+  windows.add(newWindow)
+  return newWindow
+}
 
 app.on('ready', () => {
-  mainWindow = new BrowserWindow({
-    show: false
-  })
-  mainWindow.loadFile('./app/index.html')
-  mainWindow.once('ready-to-show', () => {
-    mainWindow.show()
-    getFileFromUser()
-  })
-  mainWindow.on('closed', () => {
-    mainWindow = null
-  })
+  createWindow()
 })
 
-const getFileFromUser = exports.getFileFromUser = () => {
+const getFileFromUser = exports.getFileFromUser = (targetWindow) => {
   const files = dialog.showOpenDialog({
     properties: ['openFile'],
     filters: [
@@ -30,8 +34,10 @@ const getFileFromUser = exports.getFileFromUser = () => {
       {name: 'Markdown Files', extensions: ['md', 'markdown']}
     ]
   })
-  if (!files) { return }
-  const file = files[0]
+  if (files) { openFile(targetWindow, files[0]) }
+}
+
+const openFile = exports.openFile = (targetWindow, file) => {
   const content = fs.readFileSync(file).toString()
-  console.log(content)
+  targetWindow.webContents.send('file-opened', file, content)
 }
