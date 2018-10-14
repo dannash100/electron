@@ -1,3 +1,6 @@
+const { remote } = require('electron')
+const mainProcess = remote.require('./main.js')
+
 const marked = require('marked')
 
 const markdownView = document.querySelector('#markdown')
@@ -10,11 +13,15 @@ const saveHtmlButton = document.querySelector('#save-html')
 const showFileButton = document.querySelector('#show-file')
 const openInDefaultButton = document.querySelector('#open-in-default')
 
+const renderMarkdownToHtml = markdown => {
+  htmlView.innerHTML = marked(markdown, { sanitize: true })
+}
+
 markdownView.addEventListener('keyup', (event) => {
-    const currentContent = event.target.value;
-    renderMarkdownToHtml(currentContent)
+  const currentContent = event.target.value;
+  renderMarkdownToHtml(currentContent)
 })
 
-const renderMarkdownToHtml = markdown => {
-    htmlView.innerHTML = marked(markdown, {sanitize: true})
-}
+openFileButton.addEventListener('click', () => {
+  mainProcess.getFileFromUser()
+})

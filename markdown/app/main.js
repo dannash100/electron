@@ -22,7 +22,7 @@ app.on('ready', () => {
   })
 })
 
-const getFileFromUser = () => {
+const getFileFromUser = exports.getFileFromUser = () => {
   const files = dialog.showOpenDialog({
     properties: ['openFile'],
     filters: [
