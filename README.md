@@ -90,5 +90,5 @@ dialog.showOpenDialog(mainWindow, {
 const doSomething = exports.doSomething = () => {
 }
 ```
-* to require with remote module use ``` remote.require('./main.js')
+* to require with remote module use ```remote.require('./main.js')```
 
