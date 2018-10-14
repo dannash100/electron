@@ -82,3 +82,13 @@ dialog.showOpenDialog(mainWindow, {
 * openfile dialog is attached to the parent window, making it modal. The filters specifies an array of file types that can be displayed or selected when you want to limit the user to a specific type. 
 * returns an array containing consisting of paths of selected file/files. 
 * property flags include ```["openDirectory"]``` and ```["multiselections"]```
+
+### Interprocess Communication with Remote Module
+* built in require function does not work across electron processes, instead use the Remote Module to communicate between your multiple renderers and the main process.
+* anonymous functions assigned to a variable can be exported in this way as exports is an object in which you can attach properties and methods to
+```javascript
+const doSomething = exports.doSomething = () => {
+}
+```
+* to require with remote module use ```remote.require('./main.js')```
+
