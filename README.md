@@ -1,5 +1,5 @@
-# electron
-## a selection of simple projects to explore desktop UI with HTML and Node.js. 
+# electron #
+### a selection of simple projects to explore desktop UI with HTML and Node.js. 
 ------------------------------------------------------------------------------
 *notes taken while following Electron in Action by Steve Kinney (2018, Manning Publications)*
 
