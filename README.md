@@ -1,5 +1,5 @@
 # electron
-###a selection of simple projects to explore desktop UI with fullstack javascript. 
+### a selection of simple projects to explore desktop UI with fullstack javascript. 
 notes and experimentation with electron -- following Electron in Action by Steve Kinney (2018, Manning Publications)
 
 * Electron is a software framework for the development of desktop GUI combining node.js and chromium.
