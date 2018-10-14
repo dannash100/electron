@@ -33,3 +33,33 @@ const { shell } = require('electron')
 * Provides functions related to high-level desktop integration
 
   - shell.openExternal(URL): find the users prefered browser and open URL
+
+### Dev Tools 
+* Electron apps have access to Chrome Developer Tools using **Command-Option-I**
+* mainWindow object can programmaticly open devtools with ```webContents.openDevTools()```
+* set up a build task in Visual Studio Code and a tasks.json in project folder - **Command-Shift-B** to start application with debugging.
+```json
+// package.json
+"group": {
+    "kind": "build",
+    "isDefault": true
+ }
+ 
+ //launch.json settings
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Debug Main Process",
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceRoot}",
+        "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
+        "windows": {
+          "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd"
+        },
+        "args" : ["."]
+      }
+    ]
+  }
+```
