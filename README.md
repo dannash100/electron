@@ -72,7 +72,7 @@ launch.json
 dialog.showOpenDialog({
     properties: ['openfile'],
     filters: [
-       { name: 'Text Files, extensions: ['txt'] },
+       { name: 'Text Files', extensions: ['txt'] },
        { name: 'Markdown Files', extensions: ['md', 'markdown']}
     ]
 })
