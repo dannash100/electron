@@ -53,6 +53,11 @@ saveHtmlButton.addEventListener('click', () => {
 saveMarkdownButton.addEventListener('click', () => {
   mainProcess.saveMarkdown(currentWindow, filePath, markdownView.value)
 })
+
+revertButton.addEventListener('click', () => {
+  markdownView.value = originalContent
+  renderMarkdownToHtml(originalContent)
+})
       
 ipcRenderer.on('file-opened', (event, file, content) => {
   filePath = file
@@ -62,5 +67,9 @@ ipcRenderer.on('file-opened', (event, file, content) => {
   updateUserInterface()
 })
 
+document.addEventListener('dragstart', event => event.preventDefault())
+document.addEventListener('dragover', event => event.preventDefault())
+document.addEventListener('dragleave', event => event.preventDefault())
+document.addEventListener('drop', event => event.preventDefault())
 
 
