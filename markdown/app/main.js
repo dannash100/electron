@@ -9,7 +9,14 @@ const fs = require('fs')
 const windows = new Set()
 
 const createWindow = exports.createWindow = () => {
-  let newWindow = new BrowserWindow({ show: false })
+  let x, y
+  const currentWindow = BrowserWindow.getFocusedWindow()
+  if (currentWindow) {
+    const [currentWindowX, currentWindowY] = currentWindow.getPosition()
+    x = currentWindowX + 10
+    y = currentWindowY + 10
+  }
+  let newWindow = new BrowserWindow({ x, y, show: false })
   newWindow.loadFile('./app/index.html')
   newWindow.once('ready-to-show', () => {
     newWindow.show()
