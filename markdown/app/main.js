@@ -33,6 +33,15 @@ app.on('ready', () => {
   createWindow()
 })
 
+app.on('will-finish-launching', () => {
+  app.on('open-file', (event, file) => {
+    const win = createWindow()
+    win.once('ready-to-show', () => {
+      openFile(win, file)
+    })
+  })
+})
+
 app.on('window-all-closed', () => {
   if (process.platform === 'darwin') {
     return false
@@ -48,7 +57,7 @@ const getFileFromUser = exports.getFileFromUser = (targetWindow) => {
   const files = dialog.showOpenDialog({
     properties: ['openFile'],
     filters: [
-      {name: 'Markdown Files', extensions: ['md', 'mdown', 'mkdn', 'mkd', 'text', 'markdown']},
+      {name: 'Markdown Files', extensions: ['md', 'mdown', 'mkdn', 'mkd', 'text', 'markdown']}
     ]
   })
   if (files)  openFile(targetWindow, files[0]) 
@@ -56,5 +65,35 @@ const getFileFromUser = exports.getFileFromUser = (targetWindow) => {
 
 const openFile = exports.openFile = (targetWindow, file) => {
   const content = fs.readFileSync(file).toString()
+  app.addRecentDocument(file)
+  targetWindow.setRepresentedFilename(file)
   targetWindow.webContents.send('file-opened', file, content)
+}
+
+const saveHtml = exports.saveHtml = (targetWindow, content) => {
+  const file = dialog.showSaveDialog(targetWindow, {
+    title: 'Save HTML',
+    defaultPath: app.getPath('documents'),
+    filters: [
+      { name: 'HTML Files', extensions: ['html']}
+    ]
+  })
+  if (!file) return
+  fs.writeFileSync(file, content)
+}
+
+const saveMarkdown = exports.saveMarkdown = (targetWindow, file, content) => {
+  if (!file) {
+    file = dialog.showSaveDialog(targetWindow, {
+      title: 'Save Markdown',
+      defaultPath: app.getPath('documents'),
+      filters: [
+        { name: 'Markdown Files', extensions: ['md', 'mdown', 'mkdn', 'mkd', 'text', 'markdown']}
+      ]
+    })
+  }
+  if (!file) return
+
+  fs.writeFileSync(file, content)
+  openFile(targetWindow, file)
 }

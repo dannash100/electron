@@ -16,21 +16,26 @@ const showFileButton = document.querySelector('#show-file')
 const openInDefaultButton = document.querySelector('#open-in-default')
 
 let filePath = null
-let originContent = ''
+let originalContent = ''
 
 const renderMarkdownToHtml = markdown => {
   htmlView.innerHTML = marked(markdown, { sanitize: true })
 }
 
-const updateUserInterface = () => {
+const updateUserInterface = (isEdited) => {
   let title = 'Markdown Editor'
   if (filePath) title = `${path.basename(filePath)} - ${title}`
+  if (isEdited) title = `${title} (Edited)`
   currentWindow.setTitle(title)
+  currentWindow.setDocumentEdited(isEdited)
+  saveMarkdownButton.disabled = !isEdited
+  revertButton.disabled = !isEdited
 }
 
 markdownView.addEventListener('keyup', (event) => {
   const currentContent = event.target.value;
   renderMarkdownToHtml(currentContent)
+  updateUserInterface(currentContent !== originalContent)
 })
 
 newFileButton.addEventListener('click', () => {
@@ -40,10 +45,18 @@ newFileButton.addEventListener('click', () => {
 openFileButton.addEventListener('click', () => {
   mainProcess.getFileFromUser(currentWindow)
 })
+
+saveHtmlButton.addEventListener('click', () => {
+  mainProcess.saveHtml(currentWindow, htmlView.innerHTML)
+})
+
+saveMarkdownButton.addEventListener('click', () => {
+  mainProcess.saveMarkdown(currentWindow, filePath, markdownView.value)
+})
       
 ipcRenderer.on('file-opened', (event, file, content) => {
   filePath = file
-  originContent = content 
+  originalContent = content 
   markdownView.value = content
   renderMarkdownToHtml(content)
   updateUserInterface()
