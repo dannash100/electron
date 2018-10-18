@@ -65,7 +65,7 @@ const getFileFromUser = exports.getFileFromUser = (targetWindow) => {
   })
   if (files)  openFile(targetWindow, files[0]) 
 }
-// Main process
+// main process
 const openFile = exports.openFile = (targetWindow, file) => {
   const content = fs.readFileSync(file).toString()
   app.addRecentDocument(file) // appends file to recent documents
