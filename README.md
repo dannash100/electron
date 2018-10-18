@@ -79,7 +79,7 @@ const openFile = exports.openFile = (targetWindow, file) => {
 }
 ```
 
-* To make use of the recently opened function:
+* To make use of the 'recently opened' functionality:
 ```javascript
 app.on('will-finish-launching', () => {
   app.on('open-file', (event, file) => {
