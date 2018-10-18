@@ -92,6 +92,18 @@ app.on('will-finish-launching', () => {
 
 ```
 
+### Saving files
+* use saveDialog to select path of the file. 
+```javascript
+    file = dialog.showSaveDialog(targetWindow, {
+      title: 'Save Markdown',
+      defaultPath: app.getPath('documents'),
+      filters: [
+  
+  fs.writeFileSync(file, content)
+}
+```
+
 ### Shell module 
 ```javascript
 const { shell } = require('electron')
@@ -100,7 +112,7 @@ const { shell } = require('electron')
 
   - shell.openExternal(URL): find the users prefered browser and open URL
 
-### Dev Tools 
+### Dev tools 
 * Electron apps have access to Chrome Developer Tools using **Command-Option-I**
 * mainWindow object can programmaticly open devtools with ```webContents.openDevTools()```
 * set up a build task in Visual Studio Code and a tasks.json in project folder - **Command-Shift-B** to start application with debugging.
@@ -132,7 +144,7 @@ launch.json
   }
 ```
 
-### Dialog Module
+### Dialog module
 * Access to native file dialog boxes, optional first argument of ```mainWindow``` object appears as dropdown from app window rather than an additional window. 
 ```javascript
 dialog.showOpenDialog(mainWindow, {
