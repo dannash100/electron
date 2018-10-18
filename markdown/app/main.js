@@ -7,6 +7,7 @@ const {
 const fs = require('fs')
 
 const windows = new Set()
+const openFiles = new Map()
 
 const createWindow = exports.createWindow = () => {
   let x, y
@@ -21,8 +22,26 @@ const createWindow = exports.createWindow = () => {
   newWindow.once('ready-to-show', () => {
     newWindow.show()
   })
+  newWindow.on('close', (event) => {
+    if (newWindow.isDocumentEdited()) {
+      event.preventDefault()
+      const result = dialog.showMessageBox(newWindow, {
+        type: 'warning',
+        title: 'Quit with Unsaved Changes?',
+        message: 'Your changes will be lost if you do not save.',
+        buttons: [
+          'Quit Anyway',
+          'Cancel',
+        ],
+        defaultId: 0,
+        cancelId: 1
+      })
+      if (result === 0) newWindow.destroy()
+    }
+  })
   newWindow.on('closed', () => {
     windows.delete(newWindow)
+    stopWatchingFile(newWindow)
     newWindow = null
   })
   windows.add(newWindow)
@@ -65,9 +84,28 @@ const getFileFromUser = exports.getFileFromUser = (targetWindow) => {
 
 const openFile = exports.openFile = (targetWindow, file) => {
   const content = fs.readFileSync(file).toString()
+  startWatchingFile(targetWindow, file)
   app.addRecentDocument(file)
   targetWindow.setRepresentedFilename(file)
   targetWindow.webContents.send('file-opened', file, content)
+}
+
+const startWatchingFile = (targetWindow, file) => {
+  stopWatchingFile(targetWindow)
+  const watcher = fs.watchFile(file, (event) => {
+    if (event === 'change') {
+      const content = fs.readFileSync(file)
+      targetWindow.webContents.send('file-opened', file, content)
+    }
+  })
+  openFiles.set(targetWindow, watcher)
+}
+
+const stopWatchingFile = targetWindow => {
+  if (openFiles.has(targetWindow)) {
+    openFiles.get(targetWindow.stop())
+    openFiles.delete(targetWindow)
+  }
 }
 
 const saveHtml = exports.saveHtml = (targetWindow, content) => {
