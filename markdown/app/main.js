@@ -33,15 +33,25 @@ app.on('ready', () => {
   createWindow()
 })
 
+app.on('window-all-closed', () => {
+  if (process.platform === 'darwin') {
+    return false
+  }
+  app.quit()
+})
+
+app.on('activate', (event, hasVisibleWindows) => {
+  if(!hasVisibleWindows) createWindow()
+})
+
 const getFileFromUser = exports.getFileFromUser = (targetWindow) => {
   const files = dialog.showOpenDialog({
     properties: ['openFile'],
     filters: [
-      {name: 'Text Files', extensions: ['txt']},
-      {name: 'Markdown Files', extensions: ['md', 'markdown']}
+      {name: 'Markdown Files', extensions: ['md', 'mdown', 'mkdn', 'mkd', 'text', 'markdown']},
     ]
   })
-  if (files) { openFile(targetWindow, files[0]) }
+  if (files)  openFile(targetWindow, files[0]) 
 }
 
 const openFile = exports.openFile = (targetWindow, file) => {
