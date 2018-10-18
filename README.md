@@ -51,6 +51,11 @@ app.on('activate', (event, hasVisibleWindows) => {
 })
 ```
 * to reference which window is in use : ```currentWindow = remote.getCurrentWindow()```
+* options for app.on lifecycle events include
+  - ```'will-finish-launching'``` fires after 'ready'
+  - ```'open-file'``` fires when a file is opened.
+
+
 
 ### Example of opening a file
 
@@ -72,6 +77,19 @@ const openFile = exports.openFile = (targetWindow, file) => {
   targetWindow.setRepresentedFilename(file) // macOS only
   targetWindow.webContents.send('file-opened', file, content)
 }
+```
+
+* To make use of the recently opened function:
+```javascript
+app.on('will-finish-launching', () => {
+  app.on('open-file', (event, file) => {
+    const win = createWindow()
+    win.once('ready-to-show', () => {
+      openFile(win, file)
+    })
+  })
+})
+
 ```
 
 ### Shell module 
