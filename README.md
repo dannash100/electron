@@ -52,7 +52,7 @@ app.on('activate', (event, hasVisibleWindows) => {
 ```
 * to reference which window is in use : ```currentWindow = remote.getCurrentWindow()```
 
-### Example of Opening a file
+### Example of opening a file
 
 ```javascript
 // called from onClick inside renderers
