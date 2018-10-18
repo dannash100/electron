@@ -9,13 +9,20 @@
 
 * Cross-origin requests are permitted in electron as it has all the abilities of a node server and Chromium experimental broswer features. This also means that browser compatabillity is not a problem as a published electron app includes the chromium files. 
 
-### Set-up: UI window and loading html.
+### Set-up: multiple UI windows with offset and MacOS dock support
 
 ```javascript
 const windows = new Set()
 
 const createWindow = exports.createWindow = () => {
-  let newWindow = new BrowserWindow({ show: false })
+  let x, y
+  const currentWindow = BrowserWindow.getFocusedWindow()
+  if (currentWindow) {
+    const [currentWindowX, currentWindowY] = currentWindow.getPosition()
+    x = currentWindowX + 10
+    y = currentWindowY + 10
+  }
+  let newWindow = new BrowserWindow({ x, y, show: false })
   newWindow.loadFile('./app/index.html')
   newWindow.once('ready-to-show', () => {
     newWindow.show()
@@ -30,6 +37,17 @@ const createWindow = exports.createWindow = () => {
 
 app.on('ready', () => {
   createWindow()
+})
+
+app.on('window-all-closed', () => {
+  if (process.platform === 'darwin') {
+    return false
+  }
+  app.quit()
+})
+
+app.on('activate', (event, hasVisibleWindows) => {
+  if(!hasVisibleWindows) createWindow()
 })
 ```
 * to reference which window is in use : ```currentWindow = remote.getCurrentWindow()```
@@ -90,6 +108,11 @@ dialog.showOpenDialog(mainWindow, {
 * returns an array containing consisting of paths of selected file/files. 
 * property flags include ```["openDirectory"]``` and ```["multiselections"]```
 
+### BrowserWindow module
+* ```getFocusedWindow()``` reference to active window, will return undefined if nothing is active. 
+* ```getPosition() => [x, y]``` 
+* ```setTitle()``` change windows title
+
 ### Interprocess Communication with Remote Module
 * built in require function does not work across electron processes, instead use the Remote Module to communicate between your multiple renderers and the main process. 
 * anonymous functions assigned to a variable can be exported in this way as exports is an object in which you can attach properties and methods to
@@ -100,5 +123,6 @@ const doSomething = exports.doSomething = () => {
 * to require with remote module use ```remote.require('./main.js')```
 * in main process use ```mainWindow.webContents.send('channelName', ...dataToSend )``` to broadcast data on chosen channel
 * in renderers use ```ipcRenderer.on('channelName' (event, (dataToReceive) => {})``` to set up listeners on channel specified above.
+
 
 
