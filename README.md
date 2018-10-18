@@ -95,13 +95,14 @@ app.on('will-finish-launching', () => {
 ### Saving files
 * use saveDialog to select path of the file. 
 ```javascript
-    file = dialog.showSaveDialog(targetWindow, {
-      title: 'Save Markdown',
-      defaultPath: app.getPath('documents'),
-      filters: [
-  
-  fs.writeFileSync(file, content)
-}
+file = dialog.showSaveDialog(targetWindow, {
+  title: 'Save Markdown',
+  defaultPath: app.getPath('documents'),
+  filters: [
+   { name: 'Markdown Files', extensions: ['md', 'mdown', 'mkdn', 'mkd', 'text', 'markdown']}
+   ]
+ }
+fs.writeFileSync(file, content)
 ```
 
 ### Shell module 
