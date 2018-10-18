@@ -52,6 +52,27 @@ app.on('activate', (event, hasVisibleWindows) => {
 ```
 * to reference which window is in use : ```currentWindow = remote.getCurrentWindow()```
 
+### Example of Opening a file
+
+```javascript
+// called from onClick inside renderers
+const getFileFromUser = exports.getFileFromUser = (targetWindow) => {
+  const files = dialog.showOpenDialog({
+    properties: ['openFile'],
+    filters: [
+      {name: 'Markdown Files', extensions: ['md', 'mdown', 'mkdn', 'mkd', 'text', 'markdown']}
+    ]
+  })
+  if (files)  openFile(targetWindow, files[0]) 
+}
+// Main process
+const openFile = exports.openFile = (targetWindow, file) => {
+  const content = fs.readFileSync(file).toString()
+  app.addRecentDocument(file) // appends file to recent documents
+  targetWindow.setRepresentedFilename(file) // macOS only
+  targetWindow.webContents.send('file-opened', file, content)
+}
+```
 
 ### Shell module 
 ```javascript
@@ -112,6 +133,7 @@ dialog.showOpenDialog(mainWindow, {
 * ```getFocusedWindow()``` reference to active window, will return undefined if nothing is active. 
 * ```getPosition() => [x, y]``` 
 * ```setTitle()``` change windows title
+* ```setDocumentEdited()``` subtle window change for MacOS
 
 ### Interprocess Communication with Remote Module
 * built in require function does not work across electron processes, instead use the Remote Module to communicate between your multiple renderers and the main process. 
