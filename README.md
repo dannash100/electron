@@ -9,13 +9,20 @@
 
 * Cross-origin requests are permitted in electron as it has all the abilities of a node server and Chromium experimental broswer features. This also means that browser compatabillity is not a problem as a published electron app includes the chromium files. 
 
-### Set-up: UI window and loading html.
+### Set-up: multiple UI windows with offset
 
 ```javascript
 const windows = new Set()
 
 const createWindow = exports.createWindow = () => {
-  let newWindow = new BrowserWindow({ show: false })
+  let x, y
+  const currentWindow = BrowserWindow.getFocusedWindow()
+  if (currentWindow) {
+    const [currentWindowX, currentWindowY] = currentWindow.getPosition()
+    x = currentWindowX + 10
+    y = currentWindowY + 10
+  }
+  let newWindow = new BrowserWindow({ x, y, show: false })
   newWindow.loadFile('./app/index.html')
   newWindow.once('ready-to-show', () => {
     newWindow.show()
