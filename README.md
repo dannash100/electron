@@ -100,8 +100,8 @@ file = dialog.showSaveDialog(targetWindow, {
   defaultPath: app.getPath('documents'),
   filters: [
    { name: 'Markdown Files', extensions: ['md', 'mdown', 'mkdn', 'mkd', 'text', 'markdown']}
-   ]
- }
+  ]
+}
 fs.writeFileSync(file, content)
 ```
 
