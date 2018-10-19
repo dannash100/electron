@@ -15,11 +15,6 @@ const template = [{
       },
       { type: 'separator' },
       {
-        type: 'Cut',
-        accelerator: 'CommandOrControl+X',
-        role: 'cut'
-      },
-      {
         label: 'Copy',
         accelerator: 'CommandOrControl+C',
         role: 'copy'
@@ -47,6 +42,18 @@ const template = [{
         label: 'Close',
         accelerator: 'CommandOrControl+W',
         role: 'close'
+      }
+    ]
+  },
+  {
+    label: 'Help',
+    role: 'help',
+    submenu: [
+      {
+        label: 'Toggle Developer Tools',
+        click(item, focusedWindow) {
+          if (focusedWindow) focusedWindow.webContents.toggleDevTools()
+        }
       }
     ]
   }
