@@ -17,4 +17,9 @@ const template = [{
   ]
 }]
 
+if (process.platform === 'darwin') {
+  const name = 'Markdown Editor'
+  template.unshift({ label: name }) // moves new item to beginning of template array for macOS
+}
+
 module.exports = Menu.buildFromTemplate(template)
