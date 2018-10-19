@@ -18,6 +18,13 @@ const openInDefaultButton = document.querySelector('#open-in-default')
 let filePath = null
 let originalContent = ''
 
+const renderFile = (file, content) => {
+  filePath = file
+  originalContent = content
+  markdownView.value = content
+  updateUserInterface(false)
+}
+
 const renderMarkdownToHtml = markdown => {
   htmlView.innerHTML = marked(markdown, { sanitize: true })
 }
@@ -58,13 +65,38 @@ revertButton.addEventListener('click', () => {
   markdownView.value = originalContent
   renderMarkdownToHtml(originalContent)
 })
+
+ipcRenderer.on('file-changed', (event, file, content) => {
+  const result = remote.dialog.showMessageBox(currentWindow, {
+    type: 'warning',
+    title: 'Overwrite Current Unsaved Changes?',
+    message: 'Another application has changed this file. Load changes?',
+    buttons: [
+      'Yes',
+      'Cancel'
+    ],
+    defaultId: 0,
+    cancelId: 1
+  })
+  renderFile(file, content)
+})
       
 ipcRenderer.on('file-opened', (event, file, content) => {
-  filePath = file
-  originalContent = content 
-  markdownView.value = content
-  renderMarkdownToHtml(content)
-  updateUserInterface()
+  if (currentWindow.isDocumentEdited()) {
+    const result = remote.dialog.showMessageBox(currentWindow, {
+      type: 'warning',
+      title: 'Overwrite Current Unsaved Changes?',
+      message: 'Opening a new file in this window will overwrite your unsaved changes. Open this file anyway?',
+      buttons: [
+        'Yes',
+        'Cancel'
+      ],
+      defaultId: 0,
+      cancelId: 1
+    })
+    if (result === 1) return
+  }
+  renderFile(file, content)
 })
 
 document.addEventListener('dragstart', event => event.preventDefault())
