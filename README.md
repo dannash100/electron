@@ -181,4 +181,7 @@ const doSomething = exports.doSomething = () => {
 * Electron enables custom application and context menus
 * ```application-menu.js``` build a template object and export ```Menu.buildFromTemplate(template)```
 * in main.js ready method call ```Menu.setApplicationMenu(applicationMenu)```
+* template example inside Markdown section of the project showing hotkeys, seperators and submenus.
+
+
 
