@@ -1,13 +1,36 @@
-const {
-  app,
-  BrowserWindow,
-  dialog
-} = require('electron')
+const { app, BrowserWindow, dialog, Menu } = require('electron')
+const applicationMenu = require('./application-menu')
 
 const fs = require('fs')
 
 const windows = new Set()
 const openFiles = new Map()
+
+
+app.on('ready', () => {
+  Menu.setApplicationMenu(applicationMenu)
+  createWindow()
+})
+
+app.on('will-finish-launching', () => {
+  app.on('open-file', (event, file) => {
+    const win = createWindow()
+    win.once('ready-to-show', () => {
+      openFile(win, file)
+    })
+  })
+})
+
+app.on('window-all-closed', () => {
+  if (process.platform === 'darwin') {
+    return false
+  }
+  app.quit()
+})
+
+app.on('activate', (event, hasVisibleWindows) => {
+  if(!hasVisibleWindows) createWindow()
+})
 
 const createWindow = exports.createWindow = () => {
   let x, y
@@ -47,30 +70,6 @@ const createWindow = exports.createWindow = () => {
   windows.add(newWindow)
   return newWindow
 }
-
-app.on('ready', () => {
-  createWindow()
-})
-
-app.on('will-finish-launching', () => {
-  app.on('open-file', (event, file) => {
-    const win = createWindow()
-    win.once('ready-to-show', () => {
-      openFile(win, file)
-    })
-  })
-})
-
-app.on('window-all-closed', () => {
-  if (process.platform === 'darwin') {
-    return false
-  }
-  app.quit()
-})
-
-app.on('activate', (event, hasVisibleWindows) => {
-  if(!hasVisibleWindows) createWindow()
-})
 
 const getFileFromUser = exports.getFileFromUser = (targetWindow) => {
   const files = dialog.showOpenDialog({
