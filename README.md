@@ -180,5 +180,5 @@ const doSomething = exports.doSomething = () => {
 ### Menus
 * Electron enables custom application and context menus
 * ```application-menu.js``` build a template object and export ```Menu.buildFromTemplate(template)```
-* in main.js ready function call ```Menu.setApplicationMenu(applicationMenu)```
+* in main.js ready method call ```Menu.setApplicationMenu(applicationMenu)```
 
