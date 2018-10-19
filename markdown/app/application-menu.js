@@ -13,9 +13,7 @@ const template = [{
         accelerator: 'Shift+CommandOrControl+Z',
         role: 'redo'
       },
-      {
-        type: 'separator'
-      },
+      { type: 'separator' },
       {
         type: 'Cut',
         accelerator: 'CommandOrControl+X',
@@ -62,17 +60,13 @@ if (process.platform === 'darwin') {
         label: `About ${name}`,
         role: 'about'
       },
-      {
-        type: 'separator'
-      },
+      { type: 'separator' },
       {
         label: 'Services',
         role: 'services',
         submenu: []
       },
-      {
-        type: 'separator'
-      },
+      { type: 'separator' },
       {
         label: `Hide ${name}`,
         accelerator: 'Command+H',
@@ -87,9 +81,7 @@ if (process.platform === 'darwin') {
         label: 'Show All',
         role: 'unhide'
       },
-      {
-        type: 'separator'
-      },
+      { type: 'separator' },
       {
         label: `Quit ${name}`,
         accelerator: 'Command+Q',
