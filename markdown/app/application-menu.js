@@ -1,9 +1,44 @@
 const { app, BroswerWindow, Menu, shell } = require('electron')
 const mainProcess = require('./main')
 
-const template = [{
+const template = [
+  {
+    label: 'File',
+    submenu: [
+      {
+        label: 'New File',
+        accelerator: 'CommandOrControl+N',
+        click() {
+          mainProcess.createWindow()
+        }
+      },
+      {
+        label: 'Open File',
+        accelerator: 'CommandOrControl+O',
+        click(item, focusedWindow) {
+          mainProcess.getFileFromUser(focusedWindow)
+        }
+      },
+      {
+        label: 'Save File',
+        accelerator: 'CommandOrControl+S',
+        click(item, focusedWindow) {
+          focusedWindow.webContents.send('save-markdown')
+        }
+      },
+      {
+        label: 'Export HTML',
+        accelerator: 'Shift+CommandOrControl+S',
+        click(item, focusedWindow) {
+          focusedWindow.webContents.send('save-html')
+        }
+      }
+    ]
+  },
+  {
     label: 'Edit',
-    submenu: [{
+    submenu: [
+      {
         label: 'Undo',
         accelerator: 'CommandOrControl+Z',
         role: 'undo'
