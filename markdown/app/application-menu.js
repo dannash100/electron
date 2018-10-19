@@ -58,18 +58,21 @@ if (process.platform === 'darwin') {
   const name = 'Markdown Editor'
   template.unshift({
     label: name,
-    submenu: [
-      {
+    submenu: [{
         label: `About ${name}`,
         role: 'about'
       },
-      { type: 'seperator' },
+      {
+        type: 'separator'
+      },
       {
         label: 'Services',
         role: 'services',
         submenu: []
       },
-      { type: 'seperator' },
+      {
+        type: 'separator'
+      },
       {
         label: `Hide ${name}`,
         accelerator: 'Command+H',
@@ -84,14 +87,28 @@ if (process.platform === 'darwin') {
         label: 'Show All',
         role: 'unhide'
       },
-      { type: 'seperator' },
+      {
+        type: 'separator'
+      },
       {
         label: `Quit ${name}`,
         accelerator: 'Command+Q',
-        click() { app.quit() }
+        click() {
+          app.quit()
+        }
       }
     ]
-  }) 
+  })
+  const windowMenu = template.find(item => item.label === 'Window')
+  windowMenu.role = 'window'
+  windowMenu.submenu.push(
+    { type: 'separator'},
+    {
+    label: 'Bring All to Front',
+    role: 'front'
+    }
+  )
 }
+
 
 module.exports = Menu.buildFromTemplate(template)
