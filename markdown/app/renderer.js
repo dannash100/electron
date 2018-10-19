@@ -22,6 +22,7 @@ const renderFile = (file, content) => {
   filePath = file
   originalContent = content
   markdownView.value = content
+  renderMarkdownToHtml(content)
   updateUserInterface(false)
 }
 
