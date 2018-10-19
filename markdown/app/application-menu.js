@@ -1,4 +1,4 @@
-const { app, BroswerWindow, Menu, shell } = require('electron')
+const { app, dialog, Menu, MenuItem, shell } = require('electron')
 const mainProcess = require('./main')
 
 const template = [
