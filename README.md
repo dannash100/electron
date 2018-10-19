@@ -177,5 +177,8 @@ const doSomething = exports.doSomething = () => {
 * in main process use ```mainWindow.webContents.send('channelName', ...dataToSend )``` to broadcast data on chosen channel
 * in renderers use ```ipcRenderer.on('channelName' (event, (dataToReceive) => {})``` to set up listeners on channel specified above.
 
-
+### Menus
+* Electron enables custom application and context menus
+* ```application-menu.js``` build a template object and export ```Menu.buildFromTemplate(template)```
+* in main.js ready function call ```Menu.setApplicationMenu(applicationMenu)```
 
