@@ -6,6 +6,7 @@ const {
     systemPreferences
 } = require('electron')
 
+const clippings = []
 let tray = null
 
 const getIcon = () => {
@@ -23,13 +24,24 @@ app.on('ready', () => {
         tray.on('click', tray.popUpContextMenu)
     }
 
+    updateMenu()
+
+    tray.setToolTip('Clipmaster')
+})
+
+const updateMenu = () => {
     const menu = Menu.buildFromTemplate([
+        {
+            label: 'Create New Clipping',
+            click() { null }
+        },
+        { type: 'separator' },
+        ...clippings.map((clipping, i) => ({ label: clipping })),
+        { type: 'separator' },
         {
             label: 'Quit',
             click() { app.quit() }
         }
     ])
-
-    tray.setToolTip('Clipmaster')
     tray.setContextMenu(menu)
-})
+}
