@@ -1,4 +1,4 @@
-const { remote, ipcRenderer } = require('electron')
+const { remote, ipcRenderer, shell } = require('electron')
 const { Menu } = remote
 const mainProcess = remote.require('./main.js')
 const currentWindow = remote.getCurrentWindow()
@@ -19,11 +19,30 @@ const openInDefaultButton = document.querySelector('#open-in-default')
 let filePath = null
 let originalContent = ''
 
+const showFile = () => {
+  if (!filePath) {
+    return alert('This file has not been saved to the filesystem.')
+  }
+  shell.showItemInFolder(filePath)
+}
+
+const openInDefaultApplication = () => {
+  if (!filePath) {
+    return alert('This file has not been saved to the filesystem')
+  }
+  shell.openItem(filePath)
+}
+
+showFileButton.addEventListener('click', showFile)
+openInDefaultButton.addEventListener('click', openInDefaultApplication)
+
 const renderFile = (file, content) => {
   filePath = file
   originalContent = content
   markdownView.value = content
   renderMarkdownToHtml(content)
+  showFileButton.disabled = false
+  openInDefaultButton.disabled = false
   updateUserInterface(false)
 }
 
