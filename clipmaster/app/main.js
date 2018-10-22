@@ -1,28 +1,56 @@
 const path = require('path')
 const {
     app,
+    BrowserWindow,
     clipboard,
+    globalShortcut,
     Menu,
     Tray,
     systemPreferences
 } = require('electron')
 
+
 const clippings = []
 let tray = null
+let browserWindow = null
 
 const getIcon = () => {
-    if (process.platform === 'win32') return 'icon-light@2x.ico'
-    if (systemPreferences.isDarkMode()) return 'icon-light.png'
-    return 'icon-dark.png'
+  if (process.platform === 'win32') return 'icon-light@2x.ico'
+  if (systemPreferences.isDarkMode()) return 'icon-light.png'
+  return 'icon-dark.png'
 }
 
 app.on('ready', () => {
-    if (app.dock) app.dock.hide()
+  browserWindow = new BrowserWindow({
+    show: false
+  })
+  
+  browserWindow.load.URL(`file://${__dirname}/index.html`)
+
+  if (app.dock) app.dock.hide()
 
     tray = new Tray(path.join(__dirname, getIcon()))
 
     if (process.platform === 'win32') {
         tray.on('click', tray.popUpContextMenu)
+    }
+
+    const activationShortcut = globalShortcut.register(
+      'CommandOrControl+Option+C',
+      () => { tray.popUpContextMenu() }
+    )
+
+    if (!activationShortcut) {
+      console.error('Global activation shortcut failed to register')
+    }
+
+    const newClippingShortcut = globalShortcut.register(
+      'CommandOrControl+Shift+Option+C',
+      () => { tray.popUpContextMenu() }
+    )
+
+    if (!newClippingShortcut) {
+      console.error('Global new clipping shortcut failed to register')
     }
 
     updateMenu()
@@ -38,7 +66,7 @@ const updateMenu = () => {
             accelerator: 'CommandOrControl+Shift+C'
         },
         { type: 'separator' },
-        ...clippings.map(createClippingMenuItem),
+        ...clippings.slice(0, 10).map(createClippingMenuItem),
         { type: 'separator' },
         {
             label: 'Quit',
