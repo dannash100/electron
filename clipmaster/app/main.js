@@ -1,12 +1,12 @@
 const path = require('path')
 const {
-    app,
-    BrowserWindow,
-    clipboard,
-    globalShortcut,
-    Menu,
-    Tray,
-    systemPreferences
+  app,
+  BrowserWindow,
+  clipboard,
+  globalShortcut,
+  Menu,
+  Tray,
+  systemPreferences
 } = require('electron')
 
 
@@ -24,66 +24,76 @@ app.on('ready', () => {
   browserWindow = new BrowserWindow({
     show: false
   })
-  
+
   browserWindow.loadFile('./app/index.html')
 
   if (app.dock) app.dock.hide()
 
-    tray = new Tray(path.join(__dirname, getIcon()))
+  tray = new Tray(path.join(__dirname, getIcon()))
+  tray.setPressedImage(path.join(__dirname, 'icon-light.png'))
 
-    if (process.platform === 'win32') {
-        tray.on('click', tray.popUpContextMenu)
+  if (process.platform === 'win32') {
+    tray.on('click', tray.popUpContextMenu)
+  }
+
+  const activationShortcut = globalShortcut.register(
+    'CommandOrControl+Option+C',
+    () => {
+      tray.popUpContextMenu()
     }
+  )
 
-    const activationShortcut = globalShortcut.register(
-      'CommandOrControl+Option+C',
-      () => { tray.popUpContextMenu() }
-    )
+  if (!activationShortcut) {
+    console.error('Global activation shortcut failed to register')
+  }
 
-    if (!activationShortcut) {
-      console.error('Global activation shortcut failed to register')
+  const newClippingShortcut = globalShortcut.register(
+    'CommandOrControl+Shift+Option+C',
+    () => {
+      const clipping = addClipping()
+      if (clipping) {
+        browserWindow.webContents.send(
+          'show-notification',
+          'Clipping Added',
+          clipping
+        )
+      }
     }
+  )
 
-    const newClippingShortcut = globalShortcut.register(
-      'CommandOrControl+Shift+Option+C',
-      () => { 
-        const clipping = addClipping()
-        if (clipping) {
-          browserWindow.webContents.send(
-            'show-notification',
-            'Clipping Added',
-            clipping
-          )
-        }
-       }
-    )
+  if (!newClippingShortcut) {
+    console.error('Global new clipping shortcut failed to register')
+  }
 
-    if (!newClippingShortcut) {
-      console.error('Global new clipping shortcut failed to register')
-    }
+  updateMenu()
 
-    updateMenu()
-
-    tray.setToolTip('Clipmaster')
+  tray.setToolTip('Clipmaster')
 })
 
 const updateMenu = () => {
-    const menu = Menu.buildFromTemplate([
-        {
-            label: 'Create New Clipping',
-            click() { addClipping() },
-            accelerator: 'CommandOrControl+Shift+C'
-        },
-        { type: 'separator' },
-        ...clippings.slice(0, 10).map(createClippingMenuItem),
-        { type: 'separator' },
-        {
-            label: 'Quit',
-            click() { app.quit() },
-            accelerator: 'CommandOrControl+Q'
-        }
-    ])
-    tray.setContextMenu(menu)
+  const menu = Menu.buildFromTemplate([{
+      label: 'Create New Clipping',
+      click() {
+        addClipping()
+      },
+      accelerator: 'CommandOrControl+Shift+C'
+    },
+    {
+      type: 'separator'
+    },
+    ...clippings.slice(0, 10).map(createClippingMenuItem),
+    {
+      type: 'separator'
+    },
+    {
+      label: 'Quit',
+      click() {
+        app.quit()
+      },
+      accelerator: 'CommandOrControl+Q'
+    }
+  ])
+  tray.setContextMenu(menu)
 }
 
 const addClipping = () => {
@@ -96,10 +106,12 @@ const addClipping = () => {
 
 const createClippingMenuItem = (clipping, index) => {
   return {
-    label: clipping.length > 20
-    ? clipping.slice(0, 20) + '...'
-    : clipping,
-    click() { clipboard.writeText(clipping) },
+    label: clipping.length > 20 ?
+      clipping.slice(0, 20) + '...' :
+      clipping,
+    click() {
+      clipboard.writeText(clipping)
+    },
     accelerator: `CommandOrControl+${index}`
   }
 }
