@@ -25,7 +25,7 @@ app.on('ready', () => {
     show: false
   })
   
-  browserWindow.load.URL(`file://${__dirname}/index.html`)
+  browserWindow.loadFile('./app/index.html')
 
   if (app.dock) app.dock.hide()
 
@@ -46,7 +46,16 @@ app.on('ready', () => {
 
     const newClippingShortcut = globalShortcut.register(
       'CommandOrControl+Shift+Option+C',
-      () => { tray.popUpContextMenu() }
+      () => { 
+        const clipping = addClipping()
+        if (clipping) {
+          browserWindow.webContents.send(
+            'show-notification',
+            'Clipping Added',
+            clipping
+          )
+        }
+       }
     )
 
     if (!newClippingShortcut) {
