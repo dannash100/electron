@@ -128,6 +128,9 @@ ipcRenderer.on('save-html', () => {
   mainProcess.saveHtml(currentWindow, filePath, markdownView.value)
 })
 
+ipcRenderer.on('show-file', showFile)
+ipcRenderer.on('open-in-default', openInDefaultApplication)
+
 document.addEventListener('dragstart', event => event.preventDefault())
 document.addEventListener('dragover', event => event.preventDefault())
 document.addEventListener('dragleave', event => event.preventDefault())

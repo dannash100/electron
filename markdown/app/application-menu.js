@@ -50,6 +50,33 @@ const template = [
           }
           focusedWindow.webContents.send('save-html')
         }
+      },
+      { type: 'separator' },
+      {
+        label: 'Show File',
+        accelerator: 'Shift+CommandOrControl+S',
+        click(item, focusedWindow) {
+          if (!focusedWindow) {
+            return dialog.showErrorBox(
+              'Cannot Show File\'s Location',
+              'There is currently no active document to show.'
+            )
+          }
+          focusedWindow.webContents.send('show-file')
+        }
+      },
+      {
+        label: 'Open in Default Editor',
+        accelerator: 'Shift+CommandOrControl+S',
+        click (item, focusedWindow) {
+          if (!focusedWindow) {
+            return dialog.showErrorBox(
+              'Cannot Open File in Default Editor',
+              'There is currently no active document to open.'
+            )
+          }
+          focusedWindow.webContents.send('open-in-default')
+        }
       }
     ]
   },
