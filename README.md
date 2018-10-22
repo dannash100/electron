@@ -184,4 +184,31 @@ const doSomething = exports.doSomething = () => {
 * template example inside Markdown section of the project showing hotkeys, seperators and submenus.
 * right-click context menu's can be overwritten and replaced with custom menus. 
 
+#### Context Menu ####
+```javascript
+markdownView.addEventListener('contextmenu', (event) => {
+  event.preventDefault()
+  createContextMenu().popup({})
+})
 
+const createContextMenu = () => {
+  return Menu.buildFromTemplate([
+    { label: 'Open File', click() { mainProcess.getFileFromUser() } },
+    {
+      label: 'Show File in Folder',
+      click: showFile,
+      enabled: !!filePath 
+    },
+    {
+      label: 'Open in Default Editor',
+      click: openInDefaultApplication,
+      enabled: !!filePath
+    },
+    { type: 'separator' },
+    { label: 'Cut', role: 'cut'},
+    { label: 'Copy', role: 'copy'},
+    { label: 'Paste', role: 'paste'},
+    { label: 'Select All', role: 'selectall'}
+  ])
+} 
+```
