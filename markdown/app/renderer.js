@@ -1,4 +1,5 @@
 const { remote, ipcRenderer } = require('electron')
+const { Menu } = remote
 const mainProcess = remote.require('./main.js')
 const currentWindow = remote.getCurrentWindow()
 
@@ -145,3 +146,17 @@ markdownView.addEventListener('drop', (event) => {
   markdownView.classList.remove('drag-over')
   markdownView.classList.remove('drag-error')
 })
+
+markdownView.addEventListener('contextmenu', (event) => {
+  event.preventDefault()
+  markdownContextMenu.popup({})
+})
+
+const markdownContextMenu = Menu.buildFromTemplate([
+  { label: 'Open File', click() { mainProcess.getFileFromUser() } },
+  { type: 'separator' },
+  { label: 'Cut', role: 'cut'},
+  { label: 'Copy', role: 'copy'},
+  { label: 'Paste', role: 'paste'},
+  { label: 'Select All', role: 'selectall'}
+])
