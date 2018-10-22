@@ -1,6 +1,7 @@
 const path = require('path')
 const {
     app,
+    clipboard,
     Menu,
     Tray,
     systemPreferences
@@ -33,15 +34,35 @@ const updateMenu = () => {
     const menu = Menu.buildFromTemplate([
         {
             label: 'Create New Clipping',
-            click() { null }
+            click() { addClipping() },
+            accelerator: 'CommandOrControl+Shift+C'
         },
         { type: 'separator' },
-        ...clippings.map((clipping, i) => ({ label: clipping })),
+        ...clippings.map(createClippingMenuItem),
         { type: 'separator' },
         {
             label: 'Quit',
-            click() { app.quit() }
+            click() { app.quit() },
+            accelerator: 'CommandOrControl+Q'
         }
     ])
     tray.setContextMenu(menu)
+}
+
+const addClipping = () => {
+  const clipping = clipboard.readText()
+  if (clippings.includes(clipping)) return
+  clippings.unshift(clipping)
+  updateMenu()
+  return clipping
+}
+
+const createClippingMenuItem = (clipping, index) => {
+  return {
+    label: clipping.length > 20
+    ? clipping.slice(0, 20) + '...'
+    : clipping,
+    click() { clipboard.writeText(clipping) },
+    accelerator: `CommandOrControl+${index}`
+  }
 }
