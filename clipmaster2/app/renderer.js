@@ -1,4 +1,4 @@
-const { clipboard, shell } = require('electron');
+const { clipboard, shell, ipcRenderer } = require('electron');
 
 const request = require('request').defaults({
   url: 'https://cliphub.glitch.me/clippings',
@@ -68,4 +68,21 @@ clippingsList.addEventListener('click', (event) => {
   if (hasClass('remove-clipping')) removeClipping(clippingListItem);
   if (hasClass('copy-clipping')) writeToClipboard(getClippingText(clippingListItem));
   if (hasClass('publish-clipping')) publishClipping(getClippingText(clippingListItem));
+});
+
+ipcRenderer.on('create-new-clipping', () => {
+  addClippingToList();
+  new Notification('Clipping Added', {
+    body: `${clipboard.readText()}`,
+  });
+});
+
+ipcRenderer.on('write-to-clipbaord', () => {
+  const clipping = clippingsList.firstChild;
+  writeToClipboard(getClippingText(clipping));
+});
+
+ipcRenderer.on('publish-clipping', () => {
+  const clipping = clippingsList.firstChild;
+  publishClipping(getClippingText(clipping));
 });
