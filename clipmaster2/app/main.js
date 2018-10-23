@@ -1,9 +1,24 @@
-const { globalShortcut } = require('electron');
+const { globalShortcut, Menu } = require('electron');
 const Menubar = require('menubar');
 
-const menubar = Menubar();
+const menubar = Menubar({
+  preloadWindow: true,
+  index: `file://${__dirname}/index.html`,
+});
+
+const secondaryMenu = Menu.buildFromTemplate([
+  {
+    label: 'Quit',
+    click() { menubar.app.quit(); },
+    accelerator: 'CommandOrControl+Q',
+  },
+]);
 
 menubar.on('ready', () => {
+  menubar.tray.on('right-click', () => {
+    menubar.tray.popUpContextMenu(secondaryMenu);
+  });
+
   const createClipping = globalShortcut.register('CommandOrControl+!', () => {
     menubar.window.webContents.send('create-new-clipping');
   });
