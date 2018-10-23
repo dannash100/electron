@@ -25,7 +25,7 @@ const createClippingElement = (clippingText) => {
 };
 
 const addClippingToList = () => {
-  const clippingText = clipboard.reachText();
+  const clippingText = clipboard.readText();
   const clippingElement = createClippingElement(clippingText);
   clippingsList.prepend(clippingElement);
 };
