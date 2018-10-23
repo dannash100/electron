@@ -212,3 +212,6 @@ const createContextMenu = () => {
   ])
 } 
 ```
+
+## Menu bar/ Tray Applications
+* See clipmaster for example of Menu bar applications and clipmaster2 for a more detailed solution
