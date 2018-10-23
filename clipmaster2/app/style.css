@@ -28,6 +28,9 @@ body > div {
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
 }
+/* 
+turn on momentum scrolling for feel of native macOS application
+*/
 
 .container {
   position: absolute;
