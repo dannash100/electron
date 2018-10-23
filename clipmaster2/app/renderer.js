@@ -1,4 +1,4 @@
-const { clipboard } = require('electron');
+const { clipboard, shell } = require('electron');
 
 const request = require('request').defaults({
   url: 'https://cliphub.glitch.me/clippings',
@@ -40,7 +40,12 @@ const publishClipping = (clipping) => {
   request.post({ json: { clipping } }, (error, response, body) => {
     if (error) return alert(JSON.parse(error).message);
     const { url } = body;
-    alert(url);
+    const notification = new Notification(
+      'Your Clipping Has Been Published',
+      { body: `Click to Open ${url} in your browser.` },
+    );
+    notification.onclick = () => shell.openExternal(url);
+
     clipboard.writeText(url);
   });
 };
@@ -62,5 +67,5 @@ clippingsList.addEventListener('click', (event) => {
 
   if (hasClass('remove-clipping')) removeClipping(clippingListItem);
   if (hasClass('copy-clipping')) writeToClipboard(getClippingText(clippingListItem));
-  if (hasClass('publish-clipping')) publishClipping(getClippingText(clippingListItem)); // not finished
+  if (hasClass('publish-clipping')) publishClipping(getClippingText(clippingListItem));
 });
