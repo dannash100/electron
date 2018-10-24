@@ -4,15 +4,18 @@
   "main": "./app/main.js",
   "scripts": {
     "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "electron-rebuild"
   },
   "license": "MIT",
   "dependencies": {
     "electron": "^3.0.5",
     "electron-prebuilt-compile": "1.7.11",
+    "knex": "^0.15.2",
     "prop-types": "15.6.0",
     "react": "16.2.0",
-    "react-dom": "16.2.0"
+    "react-dom": "16.2.0",
+    "sqlite3": "^4.0.3"
   },
   "devDependencies": {
     "babel-eslint": "8.2.1",
@@ -31,6 +34,6 @@
     "eslint-plugin-import": "2.8.0",
     "eslint-plugin-react": "^7.6.1",
     "node-abi": "2.2.0",
-    "react-hot-loader": "3.1.3"
+    "react-hot-loader": "^4.3.11"
   }
 }

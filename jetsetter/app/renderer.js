@@ -1,5 +1,17 @@
 import React from 'react';
 import { render } from 'react-dom';
-import Application from './components/Application';
+import { AppContainer } from 'react-hot-loader'
 
-render(<Application />, document.getElementById('application'));
+const renderApplication = () => {
+  const { default: Application } = require('./components/Application')
+  render(
+    <AppContainer>
+      <Application />
+    </AppContainer>,
+    document.getElementById('application')
+  );
+};
+
+renderApplication();
+
+if (module.hot) module.hot.accept(renderApplication);
