@@ -6,34 +6,60 @@ class Application extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: [{ value: 'Pants', id: Date.now(), packed: false }]
+      items: []
     };
+    this.fetchItems = this.fetchItems.bind(this);
     this.addItem = this.addItem.bind(this);
     this.markAsPacked = this.markAsPacked.bind(this);
     this.markAllAsUnpacked = this.markAllAsUnpacked.bind(this);
   }
 
+  componentDidMount() {
+    this.fetchItems();
+  }
+
+  fetchItems() {
+    this.props
+      .database('items')
+      .select()
+      .then(items => this.setState({ items }))
+      .catch(console.error);
+  }
+
   addItem(item) {
-    this.setState({ items: [item, ...this.state.items]});
+    this.props
+      .database('items')
+      .insert(item)
+      .then(this.fetchItems);
   }
 
   markAsPacked(item) {
-    const otherItems = this.state.items.filter(
-      other => other.id !== item.id
-    );
-    const updatedItem = { ...item, packed: !item.packed };
-    this.setState({items: [updatedItem, ...otherItems]});
+    this.props
+      .database('items')
+      .where('id', '=', 'item.id')
+      .update({
+        packed: !item.packed
+      })
+      .then(this.fetchItems)
+      .catch(console.error);
   }
 
   markAllAsUnpacked() {
-    const items = this.state.items.map(item => ({ ...item, packed: false }));
-    this.setState({ items })
+    this.props
+      .database('items')
+      .select()
+      .update({
+        packed: false
+      })
+      .then(this.fetchItems)
+      .catch(console.error);
   }
 
   render() {
     const { items } = this.state;
     const unpackedItems = items.filter(item => !item.packed);
     const packedItems = items.filter(item => item.packed);
+    console.log(this.props.database)
 
     return (
       <div className="Application">

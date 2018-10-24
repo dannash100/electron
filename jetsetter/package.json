@@ -5,12 +5,14 @@
   "scripts": {
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "electron-rebuild"
+    "postinstall": "electron-rebuild",
+    "rebuild": "electron-rebuild -f -w sqlite3 -v 1.7"
   },
   "license": "MIT",
   "dependencies": {
-    "electron": "^3.0.5",
+    "electron": "1.7",
     "electron-prebuilt-compile": "1.7.11",
+    "electron-rebuild": "^1.8.2",
     "knex": "^0.15.2",
     "prop-types": "15.6.0",
     "react": "16.2.0",
