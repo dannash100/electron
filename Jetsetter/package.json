@@ -8,7 +8,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "electron": "1.7.11",
+    "electron": "^3.0.5",
     "electron-prebuilt-compile": "1.7.11",
     "prop-types": "15.6.0",
     "react": "16.2.0",
