@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Items from './Items'
+import NewItem from './NewItem'
 
 class Application extends Component {
   constructor(props) {
@@ -12,7 +13,9 @@ class Application extends Component {
     this.markAllAsUnpacked = this.markAllAsUnpacked.bind(this);
   }
 
-  addItem(item) {}
+  addItem(item) {
+    this.setState({ items: [item, ...this.state.items]});
+  }
 
   markAsPacked(item) {
     const otherItems = this.state.items.filter(
@@ -34,6 +37,7 @@ class Application extends Component {
 
     return (
       <div className="Application">
+        <NewItem onSubmit={this.addItem} />
         <Items 
           title="Unpacked Items"
           items={unpackedItems}
