@@ -220,3 +220,28 @@ const createContextMenu = () => {
 * at the time of writing, electron supports features up to ES2015 out-of-the-box, 
 * electron-compile will look for a file named ```.compilerc```.
 * example configuration to be found in jetsetter project.
+* electron-compile offers hot module reloading
+```javascript
+//main.js
+import { enableLiveReload } from 'electron-compile'
+
+enableLiveReload({ stratergy: 'react-hmr' })
+
+//Add "react-hot-loader/babel" to ./compilerc plugins
+
+//renderer.js
+import { AppContainer } from 'react-hot-loader'
+
+const renderApplication = async () => {
+  const { default: Application } = await import('./components/Application');
+  render(
+    <AppContainer>
+      <Application>
+    </AppContainer>,
+    document.getElementById('application')
+  )
+}
+
+renderApplication()
+if (module.hot) module.hot.accept(renderApplication)
+```
