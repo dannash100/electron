@@ -214,4 +214,9 @@ const createContextMenu = () => {
 ```
 
 ### Menu bar/ Tray Applications
-* See clipmaster for example of Menu bar applications and clipmaster2 for a more detailed solution
+* See clipmaster for example of Menu bar applications and clipmaster2 for a more detailed project
+
+### Configuring Babel for use with electron-compile
+* at the time of writing, electron supports features up to ES2015 out-of-the-box, 
+* electron-compile will look for a file named ```.compilerc```.
+* example configuration to be found in jetsetter project.
