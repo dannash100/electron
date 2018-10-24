@@ -225,5 +225,24 @@ const createContextMenu = () => {
 //main.js
 import { enableLiveReload } from 'electron-compile'
 
-enableLiveReload()
+enableLiveReload({ stratergy: 'react-hmr' })
+
+//Add "react-hot-loader/babel" to ./compilerc plugins
+
+//renderer.js
+
+import { AppContainer } from 'react-hot-loader'
+
+const renderApplication = async () => {
+  const { default: Application } = await import('./components/Application');
+  render(
+    <AppContainer>
+      <Application>
+    </AppContainer>,
+    document.getElementById('application')
+  )
+}
+
+renderApplication()
+if (module.hot) module.hot.accept(renderApplication)
 ```
