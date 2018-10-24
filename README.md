@@ -230,7 +230,6 @@ enableLiveReload({ stratergy: 'react-hmr' })
 //Add "react-hot-loader/babel" to ./compilerc plugins
 
 //renderer.js
-
 import { AppContainer } from 'react-hot-loader'
 
 const renderApplication = async () => {
