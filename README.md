@@ -221,8 +221,8 @@ const createContextMenu = () => {
 * electron-compile will look for a file named ```.compilerc```.
 * example configuration to be found in jetsetter project.
 * electron-compile offers hot module reloading
-- *in main.js*
 ```javascript
+//main.js
 import { enableLiveReload } from 'electron-compile'
 
 enableLiveReload()
