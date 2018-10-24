@@ -12,6 +12,8 @@ class Application extends Component {
     this.addItem = this.addItem.bind(this);
     this.markAsPacked = this.markAsPacked.bind(this);
     this.markAllAsUnpacked = this.markAllAsUnpacked.bind(this);
+    this.deleteItem = this.deleteItem.bind(this)
+    this.deleteUnpackeditems = this.deleteUnpackeditems.bind(this)
   }
 
   componentDidMount() {
@@ -19,7 +21,7 @@ class Application extends Component {
   }
 
   fetchItems() {
-    this.props
+   return this.props
       .database('items')
       .select()
       .then(items => this.setState({ items }))
@@ -27,16 +29,16 @@ class Application extends Component {
   }
 
   addItem(item) {
-    this.props
+   return this.props
       .database('items')
       .insert(item)
       .then(this.fetchItems);
   }
 
   markAsPacked(item) {
-    this.props
+   return this.props
       .database('items')
-      .where('id', '=', 'item.id')
+      .where('id', '=', item.id)
       .update({
         packed: !item.packed
       })
@@ -45,7 +47,7 @@ class Application extends Component {
   }
 
   markAllAsUnpacked() {
-    this.props
+   return this.props
       .database('items')
       .select()
       .update({
@@ -54,6 +56,10 @@ class Application extends Component {
       .then(this.fetchItems)
       .catch(console.error);
   }
+
+  deleteItem() {}
+
+  deleteUnpackeditems() {}
 
   render() {
     const { items } = this.state;

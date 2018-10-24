@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Item = (({ packed, id, value, onCheckOff }) => {
+const Item = ({ packed, id, value, onCheckOff }) => {
   return (
     <article className="item">
       <label>
@@ -9,6 +9,6 @@ const Item = (({ packed, id, value, onCheckOff }) => {
       </label>
     </article>
   );
-});
+};
 
 export default Item
