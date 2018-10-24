@@ -1,9 +1,0 @@
-node_modules
-
-*.sqlite
-
-out/
-*.log
-
-package-json.lock
-yarn.lock
