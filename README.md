@@ -220,3 +220,10 @@ const createContextMenu = () => {
 * at the time of writing, electron supports features up to ES2015 out-of-the-box, 
 * electron-compile will look for a file named ```.compilerc```.
 * example configuration to be found in jetsetter project.
+* electron-compile offers hot module reloading
+***** in main.js
+```javascript
+import { enableLiveReload } from 'electron-compile'
+
+enableLiveReload()
+```
