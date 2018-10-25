@@ -217,8 +217,8 @@ const createContextMenu = () => {
 * See clipmaster for example of Menu bar applications and clipmaster2 for a more detailed project
 
 ### Configuring Babel for use with electron-compile
-* at the time of writing, electron supports features up to ES2015 out-of-the-box, 
-* electron-compile will look for a file named ```.compilerc```.
+* at the time of writing, electron supports features up to ES2015 out-of-the-box but requires electron-compiler for newer ES syntax and .jsx sass etc.  
+* electron-compile will look for a file named ```.compilerc``` for settings.
 * example configuration to be found in jetsetter project.
 * electron-compile offers hot module reloading
 ```javascript
@@ -245,3 +245,7 @@ const renderApplication = async () => {
 renderApplication()
 if (module.hot) module.hot.accept(renderApplication)
 ```
+
+### IndexedDB
+* Create stores of data which contains keys and values that can be any JavaScript type - including objects, arrays, maps and sets. 
+* In the jetsetter project idb - a lightweight abstraction over IndexedDB is used to interact with the database
