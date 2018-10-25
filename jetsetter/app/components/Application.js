@@ -21,56 +21,46 @@ class Application extends Component {
   }
 
   fetchItems() {
-   return this.props
-      .database('items')
-      .select()
+    this.props
+      .database
+      .getAll()
       .then(items => this.setState({ items }))
       .catch(console.error);
   }
 
   addItem(item) {
-   return this.props
-      .database('items')
-      .insert(item)
-      .then(this.fetchItems);
+    this.props.database.addItem(item).then(this.fetchItems);
   }
 
   markAsPacked(item) {
-   return this.props
-      .database('items')
-      .where('id', '=', item.id)
-      .update({
-        packed: !item.packed
-      })
+    const updatedItem = {...item, packed: !item.packed}
+    this.props
+      .database
+      .update(updatedItem)
       .then(this.fetchItems)
       .catch(console.error);
   }
 
   markAllAsUnpacked() {
-   return this.props
-      .database('items')
-      .select()
-      .update({
-        packed: false
-      })
+    this.props
+      .database
+      .markAllAsUnpacked()
       .then(this.fetchItems)
-      .catch(console.error);
+      .catch(console.error)
   }
 
   deleteItem(item) {
-    return this.props
-      .database('items')
-      .where('id', item.id)
-      .delete()
+    this.props
+      .database
+      .delete(item)
       .then(this.fetchItems)
       .catch(console.error);
   }
 
   deleteUnpackedItems() {
-    return this.props
-      .database('items')
-      .where('packed', false)
-      .delete()
+    this.props
+      .database
+      .deleteUnpackedItems()
       .then(this.fetchItems)
       .catch(console.error);
   }
