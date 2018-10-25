@@ -13,7 +13,7 @@ class Application extends Component {
     this.markAsPacked = this.markAsPacked.bind(this);
     this.markAllAsUnpacked = this.markAllAsUnpacked.bind(this);
     this.deleteItem = this.deleteItem.bind(this)
-    this.deleteUnpackeditems = this.deleteUnpackeditems.bind(this)
+    this.deleteUnpackedItems = this.deleteUnpackedItems.bind(this)
   }
 
   componentDidMount() {
@@ -57,9 +57,23 @@ class Application extends Component {
       .catch(console.error);
   }
 
-  deleteItem() {}
+  deleteItem(item) {
+    return this.props
+      .database('items')
+      .where('id', item.id)
+      .delete()
+      .then(this.fetchItems)
+      .catch(console.error);
+  }
 
-  deleteUnpackeditems() {}
+  deleteUnpackedItems() {
+    return this.props
+      .database('items')
+      .where('packed', false)
+      .delete()
+      .then(this.fetchItems)
+      .catch(console.error);
+  }
 
   render() {
     const { items } = this.state;
@@ -74,14 +88,21 @@ class Application extends Component {
           title="Unpacked Items"
           items={unpackedItems}
           onCheckOff={this.markAsPacked}
+          onDelete={this.deleteItem}
         />
         <Items
           title="Packed Items"
           items={packedItems}
           onCheckOff={this.markAsPacked}
+          onDelete={this.deleteItem}
         />
         <button className="full-width" onClick={this.markAllAsUnpacked}>
           Mark All As Unpacked
+        </button>
+        <button
+          className="button full-width secondary"
+          onClick={this.deleteUnpackedItems}>
+          Remove Unpacked Items
         </button>
       </div>
     );

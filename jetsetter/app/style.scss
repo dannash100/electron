@@ -12,6 +12,7 @@ input {
   border: 1px solid $accent-color;
   background-color: lighten($accent-color, 30);
 }
+
 button, .button, input[type="submit"] {
   background-color: $accent-color;
   border: 1px solid darken($accent-color, 10);
@@ -33,4 +34,10 @@ width: 100%;
 }
 .NewItem-input {
   width: 100%;
+}
+
+.delete {
+  padding: 1px;
+  margin-left: 1em;
+  background-color: red;
 }
