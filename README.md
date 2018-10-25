@@ -246,6 +246,12 @@ renderApplication()
 if (module.hot) module.hot.accept(renderApplication)
 ```
 
+### SQlite3
+* requires the use of a post install script running electron-rebuild
+```javascript 
+"postinstall": "electron-rebuild",
+```
+
 ### IndexedDB
 * Create stores of data which contains keys and values that can be any JavaScript type - including objects, arrays, maps and sets. 
 * In the jetsetter project idb - a lightweight abstraction over IndexedDB is used to interact with the database
