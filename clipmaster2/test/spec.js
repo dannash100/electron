@@ -8,7 +8,7 @@ const app = new Application({
   args: [path.join(__dirname, '..')],
 });
 
-describe('clipmaster2', () => {
+describe('clipmaster2', function () {
   this.timeout(10000); // increases Mocha default timeout to account for application load
 
   beforeEach(() => app.start());
@@ -63,5 +63,23 @@ describe('clipmaster2', () => {
       .click('.remove-clipping');
     const clippings = await app.client.$$('.clippings-list-item');
     return assert.equal(clippings.length, 0);
+  });
+
+  it('should have the correct text in a new clipping', async () => {
+    await app.client.waitUntilWindowLoaded();
+    await app.electron.clipboard.writeText('Howdy');
+    await app.client.click('#copy-from-clipboard');
+    const clippingText = await app.client.getText('.clipping-text');
+    return assert.equal(clippingText, 'Howdy');
+  });
+
+  it('should write the clipping text to the clipboard', async () => {
+    await app.client.waitUntilWindowLoaded();
+    await app.electron.clipboard.writeText('Howdy');
+    await app.client.click('#copy-from-clipboard');
+    await app.electron.clipboard.writeText('Something wrong');
+    await app.client.click('.copy-clipping');
+    const clipboardText = await app.electron.clipboard.readText();
+    return assert.equal(clipboardText, 'Howdy');
   });
 });
