@@ -258,3 +258,24 @@ if (module.hot) module.hot.accept(renderApplication)
 
 ### Testing
 * See clipmaster2 project for test examples using ```spectron```
+
+### Deployment
+* ```Electron Packager``` and ```Electron Forge``` libraries
+
+#### Electron Packager 
+* ```"build": "electron-packager ."```
+  - ``` --overwrite ``` overwrites previous build
+  - ```--out=build ``` outputs build to folder *add your build directory to .gitignore*
+  - ```--icon=icons/Icon.icns``` path to icon file
+  - for multi-platform builds
+  ```json
+  "npm run build-mac && npm run build-win && npm run build-linux"
+  "build-mac": "electron-packager ." // plus settings
+  "build-win": ""
+  "build-linux": ""
+  ```
+* Asar: archive format used by Electron application 
+  
+* In package.json ```"productName":``` for app title.
+
+
