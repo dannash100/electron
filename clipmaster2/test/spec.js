@@ -8,7 +8,7 @@ const app = new Application({
   args: [path.join(__dirname, '..')],
 });
 
-describe('clipmaster2', function () {
+describe('clipmaster2', () => {
   this.timeout(10000); // increases Mocha default timeout to account for application load
 
   beforeEach(() => app.start());
@@ -27,7 +27,7 @@ describe('clipmaster2', function () {
   it('has the correct title', async () => {
     const title = await app.client.waitUntilWindowLoaded().getTitle();
     return assert.equal(title, 'Clipmaster 9000');
-  })
+  });
 
   it('does not have the developer tools open', async () => {
     const devToolsAreOpen = await app.client
@@ -46,13 +46,13 @@ describe('clipmaster2', function () {
     await app.client.waitUntilWindowLoaded();
     const clippings = await app.client.$$('.clippings-list-item'); // $ - querySelector, $$ - querySelectorAll
     return assert.equal(clippings.length, 0);
-  })
+  });
 
   it('should have one clipping when the "Copy from Clipboard" button has been pressed', async () => {
     await app.client.waitUntilWindowLoaded();
     await app.client.click('#copy-from-clipboard');
     const clippings = await app.client.$$('.clippings-list-item');
-    return assert.equal(clippings.length, 1)
+    return assert.equal(clippings.length, 1);
   });
 
   it('should successfully remove a clipping', async () => {
@@ -63,5 +63,5 @@ describe('clipmaster2', function () {
       .click('.remove-clipping');
     const clippings = await app.client.$$('.clippings-list-item');
     return assert.equal(clippings.length, 0);
-  })
+  });
 });
