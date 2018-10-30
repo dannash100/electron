@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Items from './Items'
 import NewItem from './NewItem'
 
+
 class Application extends Component {
   constructor(props) {
     super(props);
