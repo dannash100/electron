@@ -1,0 +1,11 @@
+{
+    "parserOptions": {
+      "ecmaVersion": 2017,
+      "ecmaFeatures": {
+        "globalReturn": true
+      }
+    },
+    "rules": {
+      "semi": 2
+    }
+  }
