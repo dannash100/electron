@@ -3,13 +3,13 @@ const { app,
         Menu,
         BrowserWindow,
         shell 
-      } = require('electron')
-const mainProcess = require('./main')
+      } = require('electron');
+const mainProcess = require('./main');
 
 const createApplicationMenu = () => {
-  const hasOneOrMoreWindows = !!BrowserWindow.getAllWindows().length
-  const focusedWindow = BrowserWindow.getFocusedWindow()
-  const hasFilePath = !!(focusedWindow && focusedWindow.getRepresentedFilename())
+  const hasOneOrMoreWindows = !!BrowserWindow.getAllWindows().length;
+  const focusedWindow = BrowserWindow.getFocusedWindow();
+  const hasFilePath = !!(focusedWindow && focusedWindow.getRepresentedFilename());
 
   const template = [
     {
@@ -19,7 +19,7 @@ const createApplicationMenu = () => {
           label: 'New File',
           accelerator: 'CommandOrControl+N',
           click() {
-            mainProcess.createWindow()
+            mainProcess.createWindow();
           }
         },
         {
@@ -27,12 +27,12 @@ const createApplicationMenu = () => {
           accelerator: 'CommandOrControl+O',
           click(item, focusedWindow) {
             if (focusedWindow) {
-              return mainProcess.getFileFromUser(focusedWindow)
+              return mainProcess.getFileFromUser(focusedWindow);
             }
-            const newWindow = mainProcess.createWindow()
+            const newWindow = mainProcess.createWindow();
             newWindow.on('show', () => {
-              mainProcess.getFileFromUser(newWindow)
-            })
+              mainProcess.getFileFromUser(newWindow);
+            });
           }
         },
         {
@@ -44,9 +44,9 @@ const createApplicationMenu = () => {
               return dialog.showErrorBox(
                 'Cannot Save or Export',
                 'There is currently no active document to save or export'
-              )
+              );
             }
-            focusedWindow.webContents.send('save-markdown')
+            focusedWindow.webContents.send('save-markdown');
           }
         },
         {
@@ -58,9 +58,9 @@ const createApplicationMenu = () => {
               return dialog.showErrorBox(
                 'Cannot Save or Export',
                 'There is currently no active document to save or export'
-              )
+              );
             }
-            focusedWindow.webContents.send('save-html')
+            focusedWindow.webContents.send('save-html');
           }
         },
         { type: 'separator' },
@@ -73,9 +73,9 @@ const createApplicationMenu = () => {
               return dialog.showErrorBox(
                 'Cannot Show File\'s Location',
                 'There is currently no active document to show.'
-              )
+              );
             }
-            focusedWindow.webContents.send('show-file')
+            focusedWindow.webContents.send('show-file');
           }
         },
         {
@@ -87,9 +87,9 @@ const createApplicationMenu = () => {
               return dialog.showErrorBox(
                 'Cannot Open File in Default Editor',
                 'There is currently no active document to open.'
-              )
+              );
             }
-            focusedWindow.webContents.send('open-in-default')
+            focusedWindow.webContents.send('open-in-default');
           }
         }
       ]
@@ -146,15 +146,15 @@ const createApplicationMenu = () => {
         {
           label: 'Toggle Developer Tools',
           click(item, focusedWindow) {
-            if (focusedWindow) focusedWindow.webContents.toggleDevTools()
+            if (focusedWindow) focusedWindow.webContents.toggleDevTools();
           }
         }
       ]
     }
-  ]
+  ];
 
   if (process.platform === 'darwin') {
-    const name = 'Markdown Editor'
+    const name = 'Markdown Editor';
     template.unshift({
       label: name,
       submenu: [{
@@ -187,24 +187,24 @@ const createApplicationMenu = () => {
           label: `Quit ${name}`,
           accelerator: 'Command+Q',
           click() {
-            app.quit()
+            app.quit();
           }
         }
       ]
-    })
-    const windowMenu = template.find(item => item.label === 'Window')
-    windowMenu.role = 'window'
+    });
+    const windowMenu = template.find(item => item.label === 'Window');
+    windowMenu.role = 'window';
     windowMenu.submenu.push(
       { type: 'separator'},
       {
       label: 'Bring All to Front',
       role: 'front'
       }
-    )
+    );
   }
-  return Menu.setApplicationMenu(Menu.buildFromTemplate(template))
-}
+  return Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+};
 
 
 
-module.exports = createApplicationMenu
+module.exports = createApplicationMenu;

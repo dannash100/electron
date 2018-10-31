@@ -8,7 +8,7 @@
     "isDefault": true
   },
   "scripts": {
-    "start": "electron .",
+    "start": "node server.js & electron .",
     "build": "npm run build-mac && npm run build-win && npm run build-linux",
     "build-mac": "electron-packager . --platform=darwin --out=build --icon=./icons/Icon.icns --asar --overwrite",
     "build-win": "electron-packager . --platform=win32 --out=build --icon=./icons/Icons.ico --asar --overwrite",
@@ -17,8 +17,15 @@
   },
   "license": "MIT",
   "dependencies": {
-    "electron": "^3.0.4",
-    "marked": "^0.5.1"
+    "body-parser": "^1.18.3",
+    "electron": "^3.0.6",
+    "express": "^4.16.4",
+    "http": "^0.0.0",
+    "marked": "^0.5.1",
+    "multer": "^1.4.1",
+    "path": "^0.12.7",
+    "uuid": "^3.3.2",
+    "write-file": "^1.0.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
