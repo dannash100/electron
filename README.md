@@ -283,4 +283,6 @@ if (module.hot) module.hot.accept(renderApplication)
 * has functionality to handle distrbuting and publishing of applications.
 * ```electron-forge import "path to project"``` 
 
-
+### Crash Reporting
+* See markdown project for example of crash-reporting server in action.
+* On macOS configured crash-reporter object must be required from both renderer and main process. 
